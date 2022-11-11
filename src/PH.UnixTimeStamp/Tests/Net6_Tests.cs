@@ -42,7 +42,7 @@ namespace Tests
 		{
 			var       d = DateTime.Now;
 			var       u = Uts.FromDateTime(d);
-			Exception e = null;
+			Exception? e = null;
 			try
 			{
 				var unspec = new DateTime(2022, 11, 1, 2, 3, 4, DateTimeKind.Unspecified);
