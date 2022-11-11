@@ -1,0 +1,56 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <!--<TargetFramework>net6.0</TargetFramework>-->
+    <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
+    <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
+
+
+    <PackageId>PH.UnixTimeStamp</PackageId>
+
+
+    <Description>
+      c# structs for to represent unix time stamp
+    </Description>
+    <PackageReleaseNotes>
+      First Release
+    </PackageReleaseNotes>
+
+
+    <PackageTags>unixTimeStamp,timespan, date, datetime, time</PackageTags>
+
+    <PackageVersion>0.0.1</PackageVersion>
+
+
+    <Authors>Paolo Innocenti</Authors>
+    <Copyright>Copyright PH 2022 (c) paonath@gmail.com. All rights reserved.</Copyright>
+    <RepositoryUrl>https://github.com/paonath/PH.UnixTimeStamp</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/paonath/PH.UnixTimeStamp</PackageProjectUrl>
+    <PackageIconUrl>https://raw.githubusercontent.com/paonath/Icons/master/nuget_es_img.png</PackageIconUrl>
+
+    <PackageLicenseExpression>BSD-3-Clause</PackageLicenseExpression>
+
+    <PublishRepositoryUrl>true</PublishRepositoryUrl>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GitInfo" Version="2.2.0" />
+    <PackageReference Include="Microsoft.SourceLink.GitHub" Version="[1.0.0,)" PrivateAssets="All" />
+  </ItemGroup>
+  <Target Name="PopulateInfo" DependsOnTargets="GitInfo" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <RepositoryBranch>$(GitBranch)</RepositoryBranch>
+      <RepositoryCommit>$(GitCommit)</RepositoryCommit>
+      <RepositoryTag>$(GitBaseTag)</RepositoryTag>
+      <SourceRevisionId>$(Configuration) $([System.DateTime]::UtcNow.ToString("yyyyMMdd"))_$(GitCommit)_$(GitBaseTag)</SourceRevisionId>
+    </PropertyGroup>
+  </Target>
+
+</Project>
