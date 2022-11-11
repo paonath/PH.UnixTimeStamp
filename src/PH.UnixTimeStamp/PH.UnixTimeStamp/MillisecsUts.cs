@@ -1,18 +1,36 @@
-﻿using System.Runtime.InteropServices;
+﻿#region
+
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
+using System.Threading.Tasks;
+
+#endregion
 
 namespace PH.UnixTimeStamp
 {
+
+	/// <summary>
+	/// Unix Time Stamp with Precision on Millisends
+	/// </summary>
+	/// <seealso cref="System.IComparable" />
+	/// <seealso cref="System.IComparable&lt;System.Double&gt;" />
+	/// <seealso cref="System.IEquatable&lt;System.Double&gt;" />
+	/// <seealso cref="System.IComparable&lt;PH.UnixTimeStamp.MillisecsUts&gt;" />
+	/// <seealso cref="System.IEquatable&lt;PH.UnixTimeStamp.MillisecsUts&gt;" />
+	/// <seealso cref="System.Runtime.Serialization.ISerializable" />
 	[StructLayout(LayoutKind.Auto)]
 	[Serializable]
-	public readonly struct MillisecsUts : IComparable, IComparable<double>, IEquatable<double>, IComparable<MillisecsUts>, IEquatable<MillisecsUts>,
+	public readonly struct MillisecsUts : IComparable, IComparable<double>, IEquatable<double>, IComparable<MillisecsUts>,
+	                                      IEquatable<MillisecsUts>,
 	                                      ISerializable
 	{
-		public static Precision Precision => Precision.Milliseconds;
-		public static MillisecsUts       MinValue  => new(0);
-		public static MillisecsUts       Now       => GetInternalNow().Now;
+		public static Precision    Precision => Precision.Milliseconds;
+		public static MillisecsUts MinValue  => new(0);
+		public static MillisecsUts Now       => GetInternalNow().Now;
 		public static MillisecsUts FromDateTime(DateTime dateTime) => GetFromDateTime(dateTime);
 
 
@@ -45,17 +63,13 @@ namespace PH.UnixTimeStamp
 
 		public MillisecsUts(double value) : this()
 		{
-			if (value < (double)0)
+			if (value < 0)
 			{
 				throw new ArgumentOutOfRangeException(nameof(value), "Minimum allowed value is 0");
 			}
 
 			Value = value;
-
 		}
-
-		
-
 
 
 		/// <summary>
@@ -70,7 +84,6 @@ namespace PH.UnixTimeStamp
 
 		public MillisecsUts Add(TimeSpan timeSpan) => new(Value + timeSpan.TotalMilliseconds);
 		public MillisecsUts Add(double value) => new(Value      + value);
-		
 
 
 		/// <summary>
@@ -158,7 +171,7 @@ namespace PH.UnixTimeStamp
 			return CompareTo(t);
 		}
 
-		
+
 		/// <summary>
 		///   Converts the value of this instance to an equivalent <see cref="T:System.String" /> using the specified
 		///   culture-specific formatting information.
@@ -169,8 +182,6 @@ namespace PH.UnixTimeStamp
 		/// </param>
 		/// <returns>A <see cref="T:System.String" /> instance equivalent to the value of this instance.</returns>
 		public string ToString(IFormatProvider? provider) => Convert.ToString(Value, provider);
-		
-		
 
 
 		/// <summary>
@@ -247,7 +258,6 @@ namespace PH.UnixTimeStamp
 		/// </returns>
 		public bool Equals(MillisecsUts other) => GetHashCode() == other.GetHashCode();
 
-		
 
 		/// <summary>Indicates whether this instance and a specified object are equal.</summary>
 		/// <param name="obj">The object to compare with the current instance.</param>
@@ -273,10 +283,10 @@ namespace PH.UnixTimeStamp
 			}
 
 			Value = 0;
-			bool found = false;
+			var found = false;
 
 			// Get the data
-			SerializationInfoEnumerator enumerator = info.GetEnumerator();
+			var enumerator = info.GetEnumerator();
 			while (enumerator.MoveNext())
 			{
 				if (enumerator.Name == "Value")
@@ -284,7 +294,6 @@ namespace PH.UnixTimeStamp
 					Value = Convert.ToDouble(enumerator.Value, CultureInfo.InvariantCulture);
 					found = true;
 				}
-
 			}
 
 			if (!found)
@@ -302,7 +311,6 @@ namespace PH.UnixTimeStamp
 
 			info.AddValue("Value", Value);
 		}
-
 
 
 		public static bool operator ==(MillisecsUts left, MillisecsUts right) => left.Value == right.Value;
@@ -336,5 +344,4 @@ namespace PH.UnixTimeStamp
 			return false;
 		}
 	}
-
-	}
+}
