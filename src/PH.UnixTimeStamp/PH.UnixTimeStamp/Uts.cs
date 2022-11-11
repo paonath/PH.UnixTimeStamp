@@ -12,6 +12,15 @@ using System.Threading.Tasks;
 
 namespace PH.UnixTimeStamp
 {
+	/// <summary>
+	/// Unix Time Stamp with Precision on Seconds
+	/// </summary>
+	/// <seealso cref="System.IComparable" />
+	/// <seealso cref="System.IComparable&lt;System.Double&gt;" />
+	/// <seealso cref="System.IEquatable&lt;System.Double&gt;" />
+	/// <seealso cref="System.IComparable&lt;PH.UnixTimeStamp.Uts&gt;" />
+	/// <seealso cref="System.IEquatable&lt;PH.UnixTimeStamp.Uts&gt;" />
+	/// <seealso cref="System.Runtime.Serialization.ISerializable" />
 	[StructLayout(LayoutKind.Auto)]
 	[Serializable]
 	public readonly struct Uts : IComparable, IComparable<double>, IEquatable<double>, IComparable<Uts>, IEquatable<Uts>,
