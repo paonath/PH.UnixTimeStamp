@@ -7,11 +7,14 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 #endregion
 
 namespace PH.UnixTimeStamp
 {
+
+
 
 	/// <summary>
 	/// Unix Time Stamp with Precision on Millisends
@@ -24,18 +27,18 @@ namespace PH.UnixTimeStamp
 	/// <seealso cref="System.Runtime.Serialization.ISerializable" />
 	[StructLayout(LayoutKind.Auto)]
 	[Serializable]
+	[JsonConverter(typeof(MillisecsUtsNewtownsoftJsonConverter))]
 	public readonly struct MillisecsUts : IComparable, IComparable<double>, IEquatable<double>, IComparable<MillisecsUts>,
 	                                      IEquatable<MillisecsUts>,
 	                                      ISerializable
 	{
 		public static Precision    Precision => Precision.Milliseconds;
 		public static MillisecsUts MinValue  => new(0);
-		public static MillisecsUts Now       => GetInternalNow().Now;
+		public static MillisecsUts Now       => new MillisecsUts(DateTime.UtcNow - UnixEpoch);
 		public static MillisecsUts FromDateTime(DateTime dateTime) => GetFromDateTime(dateTime);
 
 
-		internal static (MillisecsUts Now, DateTime UtcNow) UtcNow => GetInternalNow();
-
+		
 		private static MillisecsUts GetFromDateTime(DateTime dateTime)
 		{
 			if (dateTime.Kind == DateTimeKind.Unspecified)
@@ -51,15 +54,9 @@ namespace PH.UnixTimeStamp
 			return new MillisecsUts(dateTime - UnixEpoch);
 		}
 
-		private static (MillisecsUts Now, DateTime UtcNow) GetInternalNow()
-		{
-			var d = DateTime.UtcNow;
-			var n = new MillisecsUts(d - UnixEpoch);
-			return (n, d);
-		}
-
+		
 		public static readonly DateTime UnixEpoch = new(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-		public readonly        double   Value;
+		private readonly        double   Value;
 
 		public MillisecsUts(double value) : this()
 		{
@@ -117,6 +114,10 @@ namespace PH.UnixTimeStamp
 					throw new ArgumentOutOfRangeException();
 			}
 		}
+
+		public static implicit operator double(MillisecsUts uts) => uts.ToDouble();
+
+		public double ToDouble() => Value;
 
 		/// <summary>Returns the hash code for this instance.</summary>
 		/// <returns>A 32-bit signed integer that is the hash code for this instance.</returns>
@@ -309,7 +310,7 @@ namespace PH.UnixTimeStamp
 				throw new ArgumentNullException(nameof(info));
 			}
 
-			info.AddValue("Value", Value);
+			info.AddValue(string.Empty, Value, typeof(double));
 		}
 
 
