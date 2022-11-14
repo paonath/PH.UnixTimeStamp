@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0;net6.0</TargetFrameworks>
@@ -16,13 +16,13 @@
       c# structs for to represent unix time stamp
     </Description>
     <PackageReleaseNotes>
-      First Release
+      Serialize now should be able to write Uts and MillisecsUts as number
     </PackageReleaseNotes>
 
 
     <PackageTags>unixTimeStamp,timespan, date, datetime, time</PackageTags>
 
-    <PackageVersion>0.0.1</PackageVersion>
+    <PackageVersion>0.0.2</PackageVersion>
 
 
     <Authors>Paolo Innocenti</Authors>
