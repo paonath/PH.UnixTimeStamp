@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 #endregion
 
@@ -23,8 +24,9 @@ namespace PH.UnixTimeStamp
 	/// <seealso cref="System.Runtime.Serialization.ISerializable" />
 	[StructLayout(LayoutKind.Auto)]
 	[Serializable]
-	public readonly struct Uts : IComparable, IComparable<double>, IEquatable<double>, IComparable<Uts>, IEquatable<Uts>,
-	                             ISerializable
+	[JsonConverter(typeof(UtsNewtownsoftJsonConverter))]
+	[System.Text.Json.Serialization.JsonConverter(typeof(UtsSystemJsonConverter))]
+	public readonly struct Uts : IComparable, IComparable<double>, IEquatable<double>, IComparable<Uts>, IEquatable<Uts> , ISerializable
 	{
 		public static Precision Precision => Precision.Seconds;
 		public static Uts       MinValue  => new(0);
@@ -50,7 +52,7 @@ namespace PH.UnixTimeStamp
 
 		
 		public static readonly DateTime UnixEpoch = new(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-		public readonly        double   Value;
+		private readonly        double   Value;
 
 		public Uts(double value):this()
 		{
@@ -82,14 +84,28 @@ namespace PH.UnixTimeStamp
 		
 
 
+
+
 		/// <summary>
-		///   Performs an implicit conversion from <see cref="System.UInt64" /> to <see cref="Uts" />.
+		///   Performs an implicit conversion from <see cref="System.Double" /> to <see cref="Uts" />.
 		/// </summary>
 		/// <param name="l">The double value.</param>
 		/// <returns>
 		///   The result of the conversion.
 		/// </returns>
 		public static implicit operator Uts(double l) => new(l);
+
+		/// <summary>
+		/// Performs an implicit conversion from <see cref="Uts"/> to <see cref="System.Double"/>.
+		/// </summary>
+		/// <param name="unixTimeStamp">The u.</param>
+		/// <returns>
+		/// The result of the conversion.
+		/// </returns>
+		public static implicit operator double(Uts unixTimeStamp) => unixTimeStamp.ToDouble();
+
+
+		
 
 		/// <summary>
 		///   Performs an implicit conversion from <see cref="DateTime" /> to <see cref="Uts" />.
@@ -217,6 +233,8 @@ namespace PH.UnixTimeStamp
 		public TypeCode GetTypeCode() => Value.GetTypeCode();
 
 
+		public double ToDouble() => Value;
+
 		public TimeSpan ToTimeSpan() => TimeSpan.FromSeconds(Value);
 		public DateTime ToDateTime() => UnixEpoch.AddSeconds(Value);
 
@@ -288,12 +306,14 @@ namespace PH.UnixTimeStamp
 			SerializationInfoEnumerator enumerator = info.GetEnumerator();
 			while (enumerator.MoveNext())
 			{
-				if (enumerator.Name == "Value")
-				{
-					Value = Convert.ToDouble(enumerator.Value, CultureInfo.InvariantCulture);
-					found = true;
-				}
 
+				//if (enumerator.Name == "Value")
+				//{
+				//	Value = Convert.ToDouble(enumerator.Value, CultureInfo.InvariantCulture);
+				//	found = true;
+				//}
+				Value = Convert.ToDouble(enumerator.Value, CultureInfo.InvariantCulture);
+				found = true;
 			}
 
 			if (!found)
@@ -309,7 +329,7 @@ namespace PH.UnixTimeStamp
 				throw new ArgumentNullException(nameof(info));
 			}
 
-			info.AddValue("Value", Value);
+			info.AddValue(string.Empty, Value, typeof(double));
 		}
 
 
@@ -345,5 +365,4 @@ namespace PH.UnixTimeStamp
 			return false;
 		}
 	}
-
 }

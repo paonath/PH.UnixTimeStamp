@@ -1,3 +1,4 @@
+using System.Xml.Serialization;
 using Microsoft.Data.Sqlite;
 using PH.UnixTimeStamp;
 
@@ -6,7 +7,7 @@ namespace Tests
 	public class Net6Tests
 	{
 		internal static DateTime UnixMinValue  = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-		internal static ulong    UlongMinValue = 0;
+		internal static double    DoubleMinValue = 0;
 
 
 		[Fact]
@@ -30,7 +31,7 @@ namespace Tests
 			Assert.True(fromADate.ToDateTime().Kind == DateTimeKind.Utc);
 
 			Assert.Equal(UnixMinValue , u.ToDateTime());
-			Assert.Equal(UlongMinValue, u.Value);
+			Assert.Equal(DoubleMinValue, (double)u);
 			Assert.Equal(utcNow, now.ToDateTime(),TimeSpan.FromMilliseconds(499));
 			
 			Assert.NotNull(@object: implicitUts);
@@ -98,8 +99,14 @@ namespace Tests
 			var denewtonJson = Newtonsoft.Json.JsonConvert.DeserializeObject<ASampleClass>(newtonJson);
 			var eq           = sample.AUts == denewtonJson?.AUts;
 
+			var system   = System.Text.Json.JsonSerializer.Serialize(sample);
+			var deSystem = System.Text.Json.JsonSerializer.Deserialize(system, typeof(ASampleClass)) as ASampleClass;
+
+			
+
 			Assert.True(eq);
 			Assert.Equal(sample.AUts, denewtonJson?.AUts);
+			Assert.Equal(sample.AUts, deSystem?.AUts);
 			
 
 		}
