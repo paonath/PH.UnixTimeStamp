@@ -30,7 +30,7 @@ namespace Tests
 			Assert.True(nowLocal.Kind  == DateTimeKind.Local);
 			Assert.True(fromADate.ToDateTime().Kind == DateTimeKind.Utc);
 			Assert.Equal(UnixMinValue , u.ToDateTime());
-			Assert.Equal(UlongMinValue, u.Value);
+			Assert.Equal(UlongMinValue, u.ToDouble());
 			Assert.Equal(utcNow, now.ToDateTime(),TimeSpan.FromMilliseconds(499));
 			
 			Assert.NotNull(@object: implicitMillisecsUts);
@@ -93,11 +93,11 @@ namespace Tests
 		{
 			var now    = DateTime.UtcNow;
 
-			var sample = new ASampleClass(now);
+			var sample = new ASampleClassMillis(now);
 
 			var newtonJson = Newtonsoft.Json.JsonConvert.SerializeObject(sample);
 
-			var denewtonJson = Newtonsoft.Json.JsonConvert.DeserializeObject<ASampleClass>(newtonJson);
+			var denewtonJson = Newtonsoft.Json.JsonConvert.DeserializeObject<ASampleClassMillis>(newtonJson);
 			var eq           = sample.AUts == denewtonJson?.AUts;
 
 			Assert.True(eq);

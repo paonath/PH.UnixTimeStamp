@@ -7,7 +7,7 @@ namespace TestNetStsandard
 	public class UnitTest1
 	{
 		internal static DateTime UnixMinValue  = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-		internal static ulong    UlongMinValue = 0;
+		internal static double    UlongMinValue = 0;
 
 
 
@@ -27,7 +27,7 @@ namespace TestNetStsandard
 			Uts implicitUts = nowLocal;
 
 			Assert.Equal(UnixMinValue, u.ToDateTime());
-			Assert.Equal(UlongMinValue, u.Value);
+			Assert.Equal(UlongMinValue, u.ToDouble());
 			Assert.Equal(utcNow, now.ToDateTime(), TimeSpan.FromMilliseconds(500));
 
 			Assert.NotNull(@object: implicitUts);
