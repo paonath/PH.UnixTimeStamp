@@ -28,6 +28,7 @@ namespace PH.UnixTimeStamp
 	[StructLayout(LayoutKind.Auto)]
 	[Serializable]
 	[JsonConverter(typeof(MillisecsUtsNewtownsoftJsonConverter))]
+	[System.Text.Json.Serialization.JsonConverter(typeof(MillisecsUtsSystemJsonConverter))]
 	public readonly struct MillisecsUts : IComparable, IComparable<double>, IEquatable<double>, IComparable<MillisecsUts>,
 	                                      IEquatable<MillisecsUts>,
 	                                      ISerializable
