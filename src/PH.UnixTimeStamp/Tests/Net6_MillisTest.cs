@@ -100,10 +100,22 @@ namespace Tests
 			var denewtonJson = Newtonsoft.Json.JsonConvert.DeserializeObject<ASampleClassMillis>(newtonJson);
 			var eq           = sample.AUts == denewtonJson?.AUts;
 
+			var json    = System.Text.Json.JsonSerializer.Serialize(sample);
+			var deJsnon = System.Text.Json.JsonSerializer.Deserialize(json, typeof(ASampleClassMillis));
+
+			bool               isMillis = false;
+			ASampleClassMillis millis   = null;
+			if (deJsnon is ASampleClassMillis m)
+			{
+				millis   = m;
+				isMillis = true;
+			}
+
 			Assert.True(eq);
 			Assert.Equal(sample.AUts, denewtonJson?.AUts);
 			
-
+			Assert.True(isMillis);
+			Assert.Equal(sample.AUts, millis?.AUts);
 		}
 
 
