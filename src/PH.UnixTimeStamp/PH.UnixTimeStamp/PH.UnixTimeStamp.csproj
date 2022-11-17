@@ -16,13 +16,13 @@
       c# structs for to represent unix time stamp
     </Description>
     <PackageReleaseNotes>
-      Serialize now should be able to write Uts and MillisecsUts as number
+      You can read a ISO-FORMAT Date string on debugging values from Uts and MillisecsUts
     </PackageReleaseNotes>
 
 
     <PackageTags>unixTimeStamp,timespan, date, datetime, time</PackageTags>
 
-    <PackageVersion>0.0.3</PackageVersion>
+    <PackageVersion>0.0.4</PackageVersion>
 
 
     <Authors>Paolo Innocenti</Authors>

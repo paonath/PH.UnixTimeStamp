@@ -1,4 +1,4 @@
-# PH.UnixTimeStamp [![NuGet Badge](https://buildstats.info/nugetPH.UnixTimeStamp)](https://www.nuget.org/packages/PH.UnixTimeStamp/)
+# PH.UnixTimeStamp [![NuGet Badge](https://buildstats.info/nuget/PH.UnixTimeStamp)](https://www.nuget.org/packages/PH.UnixTimeStamp/)
 c# Unix Time Stamp
 
 This package provide 2 struct: `PH.UnixTimeStamp.Uts` and `PH.UnixTimeStamp.MillisecsUts`
