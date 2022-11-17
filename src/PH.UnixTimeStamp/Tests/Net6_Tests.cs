@@ -40,6 +40,33 @@ namespace Tests
 		}
 
 		[Fact]
+		public void FromDateTime()
+		{
+			long      ticks     = (long)1000000 * 1000000 * 630000;
+			DateTime  d         = new DateTime(ticks, DateTimeKind.Local);
+			DateTime  invalidDt = new DateTime(ticks, DateTimeKind.Unspecified);
+			Exception invalidEx = null;
+
+			var valid = PH.UnixTimeStamp.Uts.FromDateTime(d);
+			Console.WriteLine("Valid as ISO DATE is '{0}'", valid.ToDateTime().ToString("O"));
+
+			try
+			{
+
+				//this throw exception: you can use only DateTimeKind.Utc  or DateTimeKind.Local
+				var invalid = PH.UnixTimeStamp.Uts.FromDateTime(invalidDt);
+			}
+			catch (Exception ex)
+			{
+				Console.WriteLine("Exception {0} - {1}", ex.Message, ex.GetType());
+				invalidEx = ex;
+			}
+
+			Assert.NotNull(invalidEx);
+
+		}
+
+		[Fact]
 		public void DateTimeTest()
 		{
 			var       d = DateTime.Now;
@@ -103,12 +130,14 @@ namespace Tests
 			var system   = System.Text.Json.JsonSerializer.Serialize(sample);
 			var deSystem = System.Text.Json.JsonSerializer.Deserialize(system, typeof(ASampleClass)) as ASampleClass;
 
+			var fld = Newtonsoft.Json.JsonConvert.SerializeObject(sample.AUts);
+			
 			
 
 			Assert.True(eq);
 			Assert.Equal(sample.AUts, denewtonJson?.AUts);
 			Assert.Equal(sample.AUts, deSystem?.AUts);
-			
+			Assert.Equal(sample.AUts.ToString(), fld);
 
 		}
 

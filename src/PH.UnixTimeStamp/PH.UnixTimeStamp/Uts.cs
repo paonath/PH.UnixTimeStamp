@@ -48,7 +48,8 @@ namespace PH.UnixTimeStamp
 				dateTime = dateTime.ToUniversalTime();
 			}
 
-			return new Uts(dateTime - UnixEpoch);
+			var span = dateTime     - UnixEpoch;
+			return new Uts(span);
 		}
 
 		
@@ -75,7 +76,11 @@ namespace PH.UnixTimeStamp
 
 		}
 
-		
+		/// <summary>
+		/// Gets the iso date string.
+		/// </summary>
+		/// <returns></returns>
+		public string GetIsoDate() => IsoDate;
 
 
 

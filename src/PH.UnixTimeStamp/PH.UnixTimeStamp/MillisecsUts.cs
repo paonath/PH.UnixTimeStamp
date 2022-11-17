@@ -17,7 +17,7 @@ namespace PH.UnixTimeStamp
 
 
 	/// <summary>
-	/// Unix Time Stamp with Precision on Millisends
+	/// Unix Time Stamp with Precision on Milliseconds
 	/// </summary>
 	/// <seealso cref="System.IComparable" />
 	/// <seealso cref="System.IComparable&lt;System.Double&gt;" />
@@ -75,6 +75,12 @@ namespace PH.UnixTimeStamp
 			Value = value;
 			IsoDate = UnixEpoch.AddMilliseconds(Value).ToString("O");
 		}
+
+		/// <summary>
+		/// Gets the iso date string.
+		/// </summary>
+		/// <returns></returns>
+		public string GetIsoDate() => IsoDate;
 
 
 		/// <summary>
