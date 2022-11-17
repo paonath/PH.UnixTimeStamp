@@ -34,6 +34,7 @@ namespace PH.UnixTimeStamp
 		public static Uts FromDateTime(DateTime dateTime) => GetFromDateTime(dateTime);
 
 
+
 		
 		private static Uts GetFromDateTime(DateTime dateTime)
 		{
@@ -53,7 +54,14 @@ namespace PH.UnixTimeStamp
 		
 		public static readonly DateTime UnixEpoch = new(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 		private readonly        double   Value;
+		
+		[System.Text.Json.Serialization.JsonIgnore]
+		[JsonIgnore]
+		[NonSerialized]
+		[IgnoreDataMember]
+		private readonly string IsoDate; 
 
+		
 		public Uts(double value):this()
 		{
 			if (value < (double)0)
@@ -62,6 +70,8 @@ namespace PH.UnixTimeStamp
 			}
 
 			Value = value;
+
+			IsoDate = UnixEpoch.AddSeconds(Value).ToString("O");
 
 		}
 
@@ -300,6 +310,7 @@ namespace PH.UnixTimeStamp
 			}
 
 			Value = 0;
+			IsoDate = "";
 			bool found = false;
 
 			// Get the data
@@ -307,13 +318,9 @@ namespace PH.UnixTimeStamp
 			while (enumerator.MoveNext())
 			{
 
-				//if (enumerator.Name == "Value")
-				//{
-				//	Value = Convert.ToDouble(enumerator.Value, CultureInfo.InvariantCulture);
-				//	found = true;
-				//}
 				Value = Convert.ToDouble(enumerator.Value, CultureInfo.InvariantCulture);
 				found = true;
+				IsoDate = UnixEpoch.AddSeconds(Value).ToString("O");
 			}
 
 			if (!found)
