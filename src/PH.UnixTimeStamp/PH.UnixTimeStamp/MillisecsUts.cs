@@ -17,7 +17,7 @@ namespace PH.UnixTimeStamp
 
 
 	/// <summary>
-	/// Unix Time Stamp with Precision on Millisends
+	/// Unix Time Stamp with Precision on Milliseconds
 	/// </summary>
 	/// <seealso cref="System.IComparable" />
 	/// <seealso cref="System.IComparable&lt;System.Double&gt;" />
@@ -58,6 +58,12 @@ namespace PH.UnixTimeStamp
 		
 		public static readonly DateTime UnixEpoch = new(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
 		private readonly        double   Value;
+		
+		[System.Text.Json.Serialization.JsonIgnore]
+		[JsonIgnore]
+		[NonSerialized]
+		[IgnoreDataMember]
+		private readonly string IsoDate; 
 
 		public MillisecsUts(double value) : this()
 		{
@@ -67,7 +73,14 @@ namespace PH.UnixTimeStamp
 			}
 
 			Value = value;
+			IsoDate = UnixEpoch.AddMilliseconds(Value).ToString("O");
 		}
+
+		/// <summary>
+		/// Gets the iso date string.
+		/// </summary>
+		/// <returns></returns>
+		public string GetIsoDate() => IsoDate;
 
 
 		/// <summary>
@@ -285,6 +298,7 @@ namespace PH.UnixTimeStamp
 			}
 
 			Value = 0;
+			IsoDate = "";
 			var found = false;
 
 			// Get the data
@@ -295,6 +309,8 @@ namespace PH.UnixTimeStamp
 				{
 					Value = Convert.ToDouble(enumerator.Value, CultureInfo.InvariantCulture);
 					found = true;
+
+					IsoDate = UnixEpoch.AddMilliseconds(Value).ToString("O");
 				}
 			}
 
